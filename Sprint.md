@@ -2,47 +2,49 @@
 
 - 目的
 
-  - プルリクエスト (PR) を送りたい
-  - コードリーディングしたい
   - とりあえず触ってみたい
+    - [10 minutes to pandas](http://pandas.pydata.org/pandas-docs/stable/10min.html)
+  - コードリーディングしたい
+  - プルリクエスト (PR) を送りたい
 
 ## 全体の流れ (PR)
 
-1. リポジトリの準備
+1. 準備
 2. issue を調べる
 3. コードの修正/テストの追加
 4. プルリクエスとの記載
 5. マージを待つ
 
-PRマージされるとリリースノート/通知に名前が載る (匿名可)
+PRマージされると[リリースノート](http://pandas.pydata.org/pandas-docs/stable/release.html)/通知に名前が載る (匿名可)
 
-- http://pandas.pydata.org/pandas-docs/stable/release.html
+## 準備
 
-## リポジトリの準備
-
+- Git をインストールする
 - GitHubアカウントを作成する
-- フォークする
-- Travis 設定する (GitHub/Travis双方)
-- 仮想環境作る / ``setup.py develop`` でインストールする
+- [pandas](https://github.com/pydata/pandas) のリポジトリをフォークする
+- Travis CI の設定をする (GitHub/Travis双方)
+- ローカルにクローンする (``git@github.com:xxx/pandas.git``)
+- (必要なら) 仮想環境作る
+- ``setup.py develop`` でインストールする 
+  - 仮想環境切り替えでCythonのリコンパイルをする場合は ``setup.py clean`` する
 
 ## issue を調べる
 
-- issue の探し方
-  - openのもの
-  - issue のラベル (付与されていないものもあるため参考程度)
-      - (想定)難易度別 ("Difficulty ...")
-        - [Novice](https://github.com/pydata/pandas/labels/Difficulty%20Novice)
-        - [Intermediate](https://github.com/pydata/pandas/labels/Difficulty%20Intermediate)
-        - [Advanced](https://github.com/pydata/pandas/labels/Difficulty%20Advanced)
-      - (想定)工数のフラグ ("Effort ...") 
-        - [Low](https://github.com/pydata/pandas/labels/Effort%20Low)
-        - [Medium](https://github.com/pydata/pandas/labels/Effort%20Medium)
-        - [High](https://github.com/pydata/pandas/labels/Effort%20High)
-      - 横串管理されているもの (以下のissue群)からリンクされているもの
-        - [Master Tracker](https://github.com/pydata/pandas/labels/master%20tracker)
-          - [Index/Series Names...](https://github.com/pydata/pandas/issues/9862)は比較的簡単
-  - 興味のある分野で決める
-  - 機能追加 [Enhancement](https://github.com/pydata/pandas/labels/enhancement) は (バグ修正と比べ) PR後の議論が長くなる場合が
+- openのもの
+- issue のラベル (付与されていないものもあるため参考程度)
+  - 機能別
+  - (想定)難易度別 ("Difficulty ...")
+    - [Novice](https://github.com/pydata/pandas/labels/Difficulty%20Novice)
+    - [Intermediate](https://github.com/pydata/pandas/labels/Difficulty%20Intermediate)
+    - [Advanced](https://github.com/pydata/pandas/labels/Difficulty%20Advanced)
+  - (想定)工数のフラグ ("Effort ...") 
+    - [Low](https://github.com/pydata/pandas/labels/Effort%20Low)
+    - [Medium](https://github.com/pydata/pandas/labels/Effort%20Medium)
+    - [High](https://github.com/pydata/pandas/labels/Effort%20High)
+  - 横串管理されているもの (以下のissue群)からリンクされているもの
+    - [Master Tracker](https://github.com/pydata/pandas/labels/master%20tracker)
+      - [Index/Series Names...](https://github.com/pydata/pandas/issues/9862)は比較的簡単
+- 機能追加 [Enhancement](https://github.com/pydata/pandas/labels/enhancement) は (バグ修正と比べ) PR後の議論が長くなる場合が
 
 - 難易度 (個人の感想です)
 
@@ -50,7 +52,7 @@ PRマージされるとリリースノート/通知に名前が載る (匿名可
     - farme.py / series.py に実装があるものは(比較的)簡単
     - generic の中は少し手間
   - エラーメッセージを直す ("Error Reporting")
-  - plotting / output-formatting は他機能に影響することがないので修正は楽 / テスト準備が手間な場合も
+  - plotting / output-formatting は他機能に影響することが(ほぼ)ないので修正は楽 / テスト準備が手間な場合も
   
 - 作業中のissueは重複しないようホワイトボード(あれば)に書く
   
@@ -64,14 +66,14 @@ PRマージされるとリリースノート/通知に名前が載る (匿名可
 
   - pandas
     - core
-      - base: Index/Series で共通のメソッド
-      - common:
-      - generic
-    - tseries
-      - base
-    - compat
+      - base: Index/Series で共通のメソッドがある
+      - common: 型のチェックなどよく使われる関数がある
+      - generic: Series/DataFrame で共通のメソッドがある
+    - tseries 
+      - base: DatetimeIndex/PeriodIndex/TimedeltaIndex で共通のメソッドがある
+    - compat: py2/py3 で差異のある関数/変数の定義がある
 
-- テストの定義があるのはこちら
+- テスト用の関数はこちら
 
   - util.testing
     - ``assert_index_equal``: ``pd.Index`` の比較
